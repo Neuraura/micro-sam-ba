@@ -81,7 +81,7 @@ bool chipid_check_serie(int fd, const struct _chip_serie* serie, const struct _c
 	if (!samba_read_word(fd, serie->exid_reg, &exid))
 		return false;
 
-	fprintf(stderr, "cidr: 0x%x exid: 0x%x\n", cidr, exid);
+	printf("cidr: 0x%x exid: 0x%x\n", cidr, exid);
 
 	// Identify chip and read its flash infos
 	for (int i = 0; i < serie->nb_chips; i++) {
