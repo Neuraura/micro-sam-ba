@@ -11,13 +11,15 @@
  * more details.
  */
 
+#include <stdio.h>
 #include <string.h>
 #include "chipid.h"
 #include "comm.h"
 #include "utils.h"
 
 static const struct _chip _chips_samx7[] = {
-	{ "SAME70Q21", 0xa1020e00, 0x00000002, 0x400e0c00, 0x00400000, 2048, 9 },
+	{ "SAME70Q21A", 0xa1020e00, 0x00000002, 0x400e0c00, 0x00400000, 2048, 9 },
+	{ "SAME70Q21B", 0xa1020e01, 0x00000002, 0x400e0c00, 0x00400000, 2048, 9 },
 	{ "SAME70Q20", 0xa1020c00, 0x00000002, 0x400e0c00, 0x00400000, 1024, 9 },
 	{ "SAME70Q19", 0xa10d0a00, 0x00000002, 0x400e0c00, 0x00400000,  512, 9 },
 	{ "SAME70N21", 0xa1020e00, 0x00000001, 0x400e0c00, 0x00400000, 2048, 9 },
@@ -78,6 +80,8 @@ bool chipid_check_serie(int fd, const struct _chip_serie* serie, const struct _c
 		return false;
 	if (!samba_read_word(fd, serie->exid_reg, &exid))
 		return false;
+
+	fprintf(stderr, "cidr: 0x%x exid: 0x%x\n", cidr, exid);
 
 	// Identify chip and read its flash infos
 	for (int i = 0; i < serie->nb_chips; i++) {
