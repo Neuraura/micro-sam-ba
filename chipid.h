@@ -25,6 +25,8 @@ struct _chip {
 	uint32_t    flash_addr;
 	uint32_t    flash_size;
 	uint8_t     gpnvm;
+	uint32_t    rstc_cr_addr;
+	uint32_t    rstc_cr_value;
 };
 
 struct _chip_serie {

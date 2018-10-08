@@ -156,6 +156,9 @@ static void usage(char* prog)
 	printf("- Erasing Flash:\n");
 	printf("    %s <port> erase-all\n", prog);
 	printf("\n");
+	printf("- Reset Device:\n");
+	printf("    %s <port> reset\n", prog);
+	printf("\n");
 	printf("- Getting/Setting/Clearing GPNVM:\n");
 	printf("    %s <port> gpnvm (get|set|clear) <gpnvm_number>\n", prog);
 	printf("\n");
@@ -174,6 +177,7 @@ enum {
 	CMD_GPNVM_GET = 5,
 	CMD_GPNVM_SET = 6,
 	CMD_GPNVM_CLEAR = 7,
+	CMD_RESET = 8,
 };
 
 int main(int argc, char *argv[])
@@ -225,6 +229,13 @@ int main(int argc, char *argv[])
 	} else if (!strcmp(cmd_text, "erase-all")) {
 		if (argc == 3) {
 			command = CMD_ERASE_ALL;
+			err = false;
+		} else {
+			fprintf(stderr, "Error: invalid number of arguments\n");
+		}
+	} else if (!strcmp(cmd_text, "reset")) {
+		if (argc == 3) {
+			command = CMD_RESET;
 			err = false;
 		} else {
 			fprintf(stderr, "Error: invalid number of arguments\n");
@@ -327,6 +338,15 @@ int main(int argc, char *argv[])
 			}
 			break;
 		}
+
+		case CMD_RESET:
+		{
+			printf("Resetting device\n");
+			if ( samba_write_word(fd, chip->rstc_cr_addr, chip->rstc_cr_value) )
+				err=false;
+			break;
+		}
+
 
 		case CMD_GPNVM_GET:
 		{
